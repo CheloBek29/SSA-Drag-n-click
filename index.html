@@ -1,0 +1,495 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Умный Дом 95</title>
+    <style>
+        :root {
+            --win-bg: #C0C0C0;
+            --win-header: #000080;
+            --win-text: #000000;
+            --border-highlight: #FFFFFF;
+            --border-shadow: #808080;
+            --border-dark-shadow: #000000;
+        }
+
+        body {
+            background-color: #008080;
+            font-family: 'MS Sans Serif', 'Tahoma', 'Verdana', sans-serif;
+            font-size: 16px;
+            color: var(--win-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wsCAy0I8x5wygAAAPhJREFUOMvF0r0rQWEYx/GfV4KkUPhI0hQk90tYpI9ISgY1YxYpJbJYiM8gKchKlpKFX8Hj+57epzvoY3/11P285znnOeecl+bL+p3O0oKbeMKd0aU5i0f0oY8K2oE5jTjBD3pQwwZWUCYxhgM84QeP8BvP2463gBRM4QeLaMUD9OKBixjCGRrxgw/wFz6wBG/YBl7wBS94xRPGNQ06GqceIxxhECNYwS1u8IJ3nOIBr/hFvA3wA0/4h/8YxQzWsIE1/MMz/qYd60AxVrGCf7wgRN03gQeM4BwP2MEG1nCFd3zmGs84wQc+8YkjjjCDg2z0ucA3wA+c4gVf+MLlD/1hN3613uT/AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIzLTExLTAyVDAzOjQ1OjA4KzAwOjAwv4/wWAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMy0xMS0wMlQwMzo0NTowOCswMDowMI44cMQAAAAodEVYdGRhdGU6dGltZXN0YW1wADIwMjMtMTEtMDJUMDM6NDU6MDgrMDA6MDDtR+LgAAAAAElFTkSuQmCC'), auto;
+        }
+        
+        .pixelated {
+            image-rendering: pixelated;
+        }
+
+        .window {
+            background-color: var(--win-bg);
+            border: 2px solid;
+            border-color: var(--border-highlight) var(--border-dark-shadow) var(--border-dark-shadow) var(--border-highlight);
+            box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+            width: 800px;
+            height: 600px;
+            padding: 2px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .window-header {
+            background-color: var(--win-header);
+            color: white;
+            padding: 3px 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .window-controls button {
+            background-color: var(--win-bg);
+            border: 2px solid;
+            border-color: var(--border-highlight) var(--border-dark-shadow) var(--border-dark-shadow) var(--border-highlight);
+            width: 18px;
+            height: 18px;
+            margin-left: 3px;
+            font-family: 'Marlett', 'Webdings', 'Wingdings';
+            font-size: 10px;
+            line-height: 10px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .window-body {
+            flex-grow: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .panel {
+            border: 2px solid;
+            border-color: var(--border-shadow) var(--border-highlight) var(--border-highlight) var(--border-shadow);
+            padding: 8px;
+            background-color: var(--win-bg);
+        }
+        
+        .task-panel {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            gap: 10px;
+        }
+
+        .plan-panel {
+            flex-grow: 3;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel-title {
+            margin: -8px -8px 8px -8px;
+            padding: 2px 4px;
+            border-bottom: 2px solid;
+            border-color: var(--border-shadow) var(--border-highlight) var(--border-highlight) var(--border-shadow);
+            background: #e0e0e0;
+        }
+        
+        .floor-plan {
+            flex-grow: 1;
+            background: white;
+            border: 2px solid;
+            border-color: var(--border-shadow) var(--border-highlight) var(--border-highlight) var(--border-shadow);
+            position: relative;
+        }
+
+        .room {
+            border: 2px solid var(--win-bg);
+            position: absolute;
+            box-sizing: border-box;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 4px;
+            padding: 4px;
+        }
+        .room.drag-over {
+            background-color: #a0a0ff;
+        }
+        
+        .room-label {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2px 5px;
+            font-size: 14px;
+        }
+        
+        #living-room { top: 0; left: 0; width: 60%; height: 100%; }
+        #bedroom { top: 0; right: 0; width: 40%; height: 50%; }
+        #kitchen { bottom: 0; right: 0; width: 40%; height: 50%; border-top: 2px solid var(--win-bg);}
+
+
+        .elements-panel {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .elements-grid {
+             flex-grow: 1;
+             display: flex;
+             flex-wrap: wrap;
+             gap: 15px;
+             align-content: flex-start;
+             padding-top: 10px;
+        }
+
+        .device {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: grab;
+        }
+        
+        .device.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .device img {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .device span {
+            font-size: 12px;
+        }
+        
+        .room .device {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .room .device span {
+           display: none;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-window {
+            width: 350px;
+        }
+
+        .modal-body {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .modal-body img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .modal-footer {
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .win-button {
+            background-color: var(--win-bg);
+            border: 2px solid;
+            border-color: var(--border-highlight) var(--border-dark-shadow) var(--border-dark-shadow) var(--border-highlight);
+            padding: 5px 20px;
+            box-shadow: 1px 1px 0px var(--border-dark-shadow);
+        }
+        
+        .win-button:active {
+            border-color: var(--border-dark-shadow) var(--border-highlight) var(--border-highlight) var(--border-dark-shadow);
+            box-shadow: none;
+            transform: translate(1px, 1px);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="window" id="main-window">
+        <div class="window-header">
+            <span>Homenet Setup 95</span>
+            <div class="window-controls">
+                <button>_</button>
+                <button>&#9633;</button>
+                <button>X</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="panel task-panel" id="task-display">
+                ЗАДАЧА: Загрузка...
+            </div>
+            <div class="main-content">
+                <div class="panel plan-panel">
+                    <div class="panel-title">План Квартиры</div>
+                    <div class="floor-plan">
+                        <div class="room" id="living-room" data-room="Гостиная">
+                            <span class="room-label">Гостиная</span>
+                        </div>
+                        <div class="room" id="bedroom" data-room="Спальня">
+                             <span class="room-label">Спальня</span>
+                        </div>
+                        <div class="room" id="kitchen" data-room="Кухня">
+                             <span class="room-label">Кухня</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel elements-panel">
+                    <div class="panel-title">Элементы Умного Дома</div>
+                    <div class="elements-grid" id="elements-container">
+                        <div class="device" id="device-socket" draggable="true">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAD5JREFUWEft0EEKADAIxEHy7L/XRoF2uYFqfE+wU1p8Z5hSBAh+AgEBAYE/ARAYQIAgL2Bv9t7t29/fA9wVCEQgAgEBAYEnAofzG08VRMIPAAAAAElFTkSuQmCC" alt="Умная розетка" class="pixelated">
+                            <span>Розетка</span>
+                        </div>
+                         <div class="device" id="device-sensor" draggable="true">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYlJREFUWEedl0tuwzAMRbmZm2AmmkEmaCfbJCTBJdgJmIAnYJo0eB6UBCFKtqLIX0Z+lBRf7Md2HL6sfDwuPwI4AGfgCbgDToA+G1gD7/8P4A5wA04AT8D57MhB+gAUgRtw/g1OQBuAP/h4wBtwAUwK8P8O3AGn4G5gDngCvgAX4WkAXoK/8a0AOzABvAFJc/C3zY4/oU2AO8ABcE+AfcA54N/5oJ8Av4AL8E0A9oBfAN8Gv8eBH+C3AFiS/hT4SgL4U2ArA5+Bq317yL4ADsD5D3AB3AT+BvgD/gP8308k+E3iCjgbqP4H4GZwSgJ4EwA+gE4+i7gB6+0w4gV4ANr7O3j363YvgCeweG+jAJvyD5a2H7kYvgTw4Wq/3gCLYFHAfL3PArAYvADwfo0sANd8AK58A+C69wF4ABqAhwB4fweAfV3rARbAInwQ8A14c8P7P3AD3AOn5X8/AdY12t+nE+BvBPAAvwR8P2g84N8B0A8ARXwG4AN4A15A3wI+AXwGbAG/AL6t8Qbw6wSgA/gI/gfgWwUATwH8O/UjE+C3gDfgPXgB3gK/gbwHwG/3v+cDfK3//AD2vQAAJ/wI8K/BA/gQgFkA3v+aAA0/AZ6AGwHPAI3fASwADcDHADyAI57T5Pj/2f0Bf552bA5hhi8AAAAASUVORK5CYII=" alt="Датчик движения" class="pixelated">
+                            <span>Датчик</span>
+                        </div>
+                         <div class="device" id="device-camera" draggable="true">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAXxJREFUWEft10FOwzAMBWB3U/YQ3cMxOgc3yF24C+gU2iVpkyWlSJGcOP54Lcn/1FIm+d7P5yJ3jX+5aK4D4J/+L+AJOAErQAnYAPt/8r8PzIAFcAO8AOfgL/D3CbgB3oD3JMQd8AM4APc9/wG8Au+Be3gG7oCFADyApkL8DcgAFuAJWAJfAZaBv/sL+AJ+gRngC/h+A/wQfg2wAswAa+A9uAXWAu1zAB8AbcD5zI6T3QOcgfMA7AN3A7ANfAF+Bq8m2B58AWz4HvgCmAO74J2B/4G1wQfwCvhX4B/wA5wA34AX4G41AAdg+v8AegA8gN/yTwAfAUjY3N8P4Avo+wPA+78vAH4B9gC0/eB/ANB6vV5gQ17Q/d3W3AB8y8v7u8Xz+sAAmA0APeA92ArwANh7ACaA7j0ATgC99wB8A+Degy9AXyL6APz7eB0AvwO8fQD8DnDvAfD3gXsPABs4A7wBvJz59y8AjYDH4J/y3wzggL/V/f8A/L8C3gE+g/cANgBH4Dk4A27AOfgBXIAHoANgBbi7x/8f9s330X8BXoAH4BbwZgA+AQfACjAC/Ff/gQfgi7z3gZkABcApwAZwAdwv8AOgHfgZgL8AXQAPwAPQAViAz/0F+AMgAbwA4vX9/QE34An4E+AAuAFeAR8CPAc/gQe+HAPvAXgDboAD4G2AnwBvgI9D/An+1f0P4BvARwHWA9gAfABuwC7gAPwP0D9/AD8BD8AbwAfwT8D/gL35Aez56wN4BjwBrICXAFn/4u//LfwD9wD2ATwA3/+/gIuA/Ac5x9G12j9hKgAAAABJRU5ErkJggg==" alt="Камера" class="pixelated">
+                            <span>Камера</span>
+                        </div>
+                         <div class="device" id="device-thermostat" draggable="true">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAQBJREFUWEfF11EOg0AMRNEHcOkp2oP4P1yK+wHtxXpBihWt2tkyZzJ5TDbzE2lX28uPAdwAd8Al+AI+gJ/B7g74CngCXIAfcHAC/N0EzsABcAMsgVeAH8AFcAlcAo+AP8AZ+AD8I3AG/gSngI9Am8C9g4sAW4AtsAIsAQuADyDbB5EEwNq9AOsnQOsA9A6A1gGgNwD6ANB2APgMwO4AdB8AzgB0HwA+BuAvgF8BfASwD8B2AKwHYHuA5gDkDkD7AJwH4C8A/wLYBvAagG0AtgbAagDmAN4AsANAD+ALwF4A1gNIB0AHQBcAlwFIB2BGANgGwGYA+QDgAFgM4OcaA5s5f1IAzAF0AHQA9ACyAVQOQNcBVQcgagDFAdAxAKkDgLkE+wUAdgD2DQD7AexfA/AbgD8AG4FvAL/f/13gD/gI/A08AZdAMvAeOM88Ad+Ad+AAnAAn4ANwAdzY9D8A3L/59QdI5nUfI+QG9wAAAABJRU5ErkJggg==" alt="Термостат" class="pixelated">
+                            <span>Термостат</span>
+                        </div>
+                         <div class="device" id="device-speaker" draggable="true">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAOZJREFUWEftl0EOgCAMBPeobd+h98n/UFTp0pC2sUlxQBCb781kMghfLsqXx/0AEO/C/wEA/gBYDABpAEBrAIAXAICUAADQAQBWAcA6ADAFAEgHAHIAgGUAwLoAAC4AwLIAIC4AIAcAWAdAKwBAbQDAWgBA7QGAZADAagCAGABAFQBAHQBALACQGgDkAEA2AEgNANgAIOc+AIAtANgOAPcA7gGAvQCgPQD/CuA5gLcB8A3g+wA8B1A+gP4D+AnwG8BvAD8B/Arg+wC4B+D/AegcgF4A7AGQ2gAsAvQAoAsAiAHAGgBAbQDAWACgdgBAbQCgNACA/QIw/gJ/X8/y3BvSzwAAAABJRU5ErkJggg==" alt="Умная колонка" class="pixelated">
+                            <span>Колонка</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Template -->
+    <div id="modal-container" class="modal-overlay">
+        <div class="window modal-window">
+            <div class="window-header" id="modal-title">Information</div>
+            <div class="window-body">
+                <div class="modal-body">
+                    <img id="modal-icon" src="" alt="icon" class="pixelated">
+                    <p id="modal-message">Сообщение</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-ok-button" class="win-button">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- ASSETS ---
+            const soundSuccess = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YUIAAABvT1/w2/lU/a4DkP+PA0H/pP6fAPIAEwD5/voAVgAbAPn++QA7ABQA9v4dAEUAJgDw/tgASwCUAOH/IgChAHsAxv+IAI0A/gDF/84AgwCVAL//iACzAJEAnwBEAKgA/ACK/78A7wCX/4gAYgDmAM3/kwB+AFIAz//OAH4AjwCP/7sAvQDg/3oAwwDWAGYAngDhAFQA0ACaAIgArwCVAIYAwwCdALQAtQCLAN4ARgB2ACgAawBIAKYAagA0ANQAgwBwAF0AbQCIAIoAXQDOAC8AVwClACEAUwA/AI8AawAaAFsASgA/ADsAYgA3ADMAUgA/AEgAZgBSADsARgBDAEYATwA=');
+            const soundError = new Audio('data:audio/wav;base64,UklGRigBAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQBAAD/////AAAAAAAAAAD/AAAA//8AAAAA////AAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAD/AAAA////AAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AA==');
+            const iconInfo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAG9JREFUWEft1sENgCAQBMEYiW/sR3AEz+BZmKBYjKbxmYd/dkiSlGS/4+Vp8vJucgI4ASeA1QAy2wQA0AIgeQAoQBEACgBAIQBUAFQAVACUAKAigAQAEDKAiQBwAgDSf0A7AECGzS8A8H8bYQYkzt+5+gAAAABJRU5ErkJggg==';
+            const iconError = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAIhJREFUWEft0sENgCAMRFEfk7ZpB2qgTmqgDWgg2oZqgCLpEM0U4v/AhQf3e+910qHw+T7+fgBwE14A4IUA7ABACwBoBACoAQBUBQA1ANCmAGgEACgAQAMAaAAABQBAAQAoAECbAKAJAFAQgE4AtAnAFoB0AaBbAAoA0AXQvgH8d5jY+gH0+v+1fgDb8gM+AAAAAElFTkSuQmCC';
+            const iconSuccess = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAO1JREFUWEft1kEOgDAIQFE/to99/39vN4oVW+5iEHEWbnAJaUoW+bUc5z/XAQDA+3ECAE4AIAcATAAQAgAUAEAGAMAEAGAEAGAAgAAAIAcAyAEAGAAgBAAIAEA2ADgGYDsAWAIAWQB0A0BXANAbAEYB8CMAegCgC8BuAG4BYBnA3QB0B8AnAIgA/iMAAEC8AIAeANgC4HoAvwLgDwDQA8B+BTAegPYC8CeA+gKwH4B9AGQbgBcA1AA4AKAFwF8APgHgfwJ4HYCrAXoA0AOAeAEAfgLwA8D/A3C/g/0/Ad0BWAvAAAB+AbIAkF2l+wPjAAAAAElFTkSuQmCC';
+
+            // --- GAME STATE & CONFIG ---
+            const gameState = {
+                currentLevel: 1,
+                levels: {
+                    1: {
+                        task: "ЗАДАЧА 1: Обеспечьте безопасность в гостиной.",
+                        targets: [
+                            { deviceId: 'device-camera', room: 'Гостиная' },
+                            { deviceId: 'device-sensor', room: 'Гостиная' }
+                        ],
+                        placed: []
+                    },
+                    2: {
+                        task: "ЗАДАЧА 2: Создайте комфорт в доме.",
+                        targets: [
+                            { deviceId: 'device-thermostat', room: 'Спальня' },
+                            { deviceId: 'device-speaker', room: 'Гостиная' }
+                        ],
+                        placed: []
+                    },
+                    3: {
+                        task: "ЗАДАЧА 3: Повысьте энергоэффективность.",
+                        targets: [
+                            { deviceId: 'device-socket', room: 'Кухня' }
+                        ],
+                        placed: []
+                    }
+                }
+            };
+
+            // --- DOM ELEMENTS ---
+            const taskDisplay = document.getElementById('task-display');
+            const devices = document.querySelectorAll('.device');
+            const rooms = document.querySelectorAll('.room');
+            const modalContainer = document.getElementById('modal-container');
+            const modalTitle = document.getElementById('modal-title');
+            const modalIcon = document.getElementById('modal-icon');
+            const modalMessage = document.getElementById('modal-message');
+            const modalOkButton = document.getElementById('modal-ok-button');
+            const elementsContainer = document.getElementById('elements-container');
+
+            let draggedItem = null;
+
+            // --- FUNCTIONS ---
+            function updateTaskDisplay() {
+                if (gameState.currentLevel > Object.keys(gameState.levels).length) {
+                    taskDisplay.textContent = "Система полностью настроена!";
+                } else {
+                    taskDisplay.textContent = gameState.levels[gameState.currentLevel].task;
+                }
+            }
+            
+            function showModal(type, message) {
+                if (type === 'success') {
+                    modalTitle.textContent = 'Information';
+                    modalIcon.src = iconInfo;
+                    soundSuccess.play();
+                } else if (type === 'error') {
+                    modalTitle.textContent = 'Error';
+                    modalIcon.src = iconError;
+                    soundError.play();
+                } else if (type === 'final') {
+                    modalTitle.textContent = 'Поздравляем!';
+                    modalIcon.src = iconSuccess;
+                    soundSuccess.play();
+                }
+                modalMessage.textContent = message;
+                modalContainer.style.display = 'flex';
+            }
+            
+            function hideModal() {
+                modalContainer.style.display = 'none';
+            }
+
+            function checkLevelCompletion() {
+                const level = gameState.levels[gameState.currentLevel];
+                if (level.placed.length === level.targets.length) {
+                    showModal('success', 'Отлично! Система настроена верно!');
+                    gameState.currentLevel++;
+                    if (gameState.currentLevel > Object.keys(gameState.levels).length) {
+                        setTimeout(() => showModal('final', 'Поздравляем! Вы создали идеальный Умный Дом 95!'), 500);
+                    }
+                    updateTaskDisplay();
+                }
+            }
+            
+            function handleDrop(e) {
+                e.preventDefault();
+                const dropZone = e.currentTarget;
+                const deviceId = e.dataTransfer.getData('text/plain');
+                const deviceElement = document.getElementById(deviceId);
+                
+                if (!deviceElement || !dropZone.classList.contains('room')) return;
+
+                const roomName = dropZone.dataset.room;
+                dropZone.classList.remove('drag-over');
+
+                const level = gameState.levels[gameState.currentLevel];
+                const target = level.targets.find(t => t.deviceId === deviceId && t.room === roomName);
+                const isAlreadyPlaced = level.placed.includes(deviceId);
+
+                if (target && !isAlreadyPlaced) {
+                    // Correct placement
+                    const clonedDevice = deviceElement.cloneNode(true);
+                    clonedDevice.id = `placed-${deviceId}`;
+                    clonedDevice.draggable = false;
+                    clonedDevice.classList.remove('dragging');
+                    clonedDevice.style.cursor = 'default';
+                    dropZone.appendChild(clonedDevice);
+                    
+                    deviceElement.style.visibility = 'hidden'; // Hide original
+                    
+                    level.placed.push(deviceId);
+                    checkLevelCompletion();
+                } else {
+                    // Incorrect placement
+                    showModal('error', 'Ошибка! Этот элемент здесь не нужен.');
+                }
+            }
+
+
+            // --- EVENT LISTENERS ---
+            devices.forEach(device => {
+                device.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', e.target.id);
+                    setTimeout(() => e.target.classList.add('dragging'), 0);
+                });
+                
+                device.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('dragging');
+                });
+            });
+
+            rooms.forEach(room => {
+                room.addEventListener('dragover', (e) => {
+                    e.preventDefault(); // Necessary to allow dropping
+                    room.classList.add('drag-over');
+                });
+
+                room.addEventListener('dragleave', () => {
+                     room.classList.remove('drag-over');
+                });
+                
+                room.addEventListener('drop', handleDrop);
+            });
+            
+            modalOkButton.addEventListener('click', hideModal);
+
+
+            // --- INITIALIZE GAME ---
+            updateTaskDisplay();
+        });
+    </script>
+</body>
+</html>
