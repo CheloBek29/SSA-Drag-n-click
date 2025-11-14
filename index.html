@@ -13,6 +13,7 @@
             --border-highlight: #FFFFFF;
             --border-shadow: #808080;
             --border-dark-shadow: #000000;
+            --tooltip-bg: #FFFFE1;
         }
 
         body {
@@ -26,25 +27,26 @@
             height: 100vh;
             margin: 0;
             overflow: hidden;
-            cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wsCAy0I8x5wygAAAPhJREFUOMvF0r0rQWEYx/GfV4KkUPhI0hQk90tYpI9ISgY1YxYpJbJYiM8gKchKlpKFX8Hj+57epzvoY3/11P285znnOeecl+bL+p3O0oKbeMKd0aU5i0f0oY8K2oE5jTjBD3pQwwZWUCYxhgM84QeP8BvP2463gBRM4QeLaMUD9OKBixjCGRrxgw/wFz6wBG/YBl7wBS94xRPGNQ06GqceIxxhECNYwS1u8IJ3nOIBr/hFvA3wA0/4h/8YxQzWsIE1/MMz/qYd60AxVrGCf7wgRN03gQeM4BwP2MEG1nCFd3zmGs84wQc+8YkjjjCDg2z0ucA3wA+c4gVf+MLlD/1hN3613uT/AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIzLTExLTAyVDAzOjQ1OjA4KzAwOjAwv4/wWAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMy0xMS0wMlQwMzo0NTowOCswMDowMI44cMQAAAAodEVYdGRhdGU6dGltZXN0YW1wADIwMjMtMTEtMDJUMDM6NDU6MDgrMDA6MDDtR+LgAAAAAElFTkSuQmCC'), auto;
-        }
-        
-        .pixelated {
+            cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wsCAy0I8x5wygAAAPhJREFUOMvF0r0rQWEYx/GfV4KkUPhI0hQk90tYpI9ISgY1YxYpJbJYiM8gKchKlpKFX8Hj+57epzvoY3/11P285znnOeecl+bL+p3O0oKbeMKd0aU5i0f0oY8K2oE5jTjBD3pQwwZWUCYxhgM84QeP8BvP2463gBRM4QeLaMUD9OKBixjCGRrxgw/wFz6wBG/YBl7wBS94xRPGNQ06GqceIxxhECNYwS1u8IJ3nOIBr/hFvA3wA0/4h/8YxQzWsIE1/MMz/qYd60AxVrGCf7wgRN03gQeM4BwP2MEG1nCFd3zmGs84wQc+8YkjjjCDg2z0ucA3wA+c4gVf+MLlD/1hN3613uT/AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIzLTExLTAyVDAzOjQ1OjA4KzAwOjAwv4/wWAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMy0xMS0wMlQwMzo0NTowOCswMDowMN855IcAAAAASUVORK5CYII='), auto;
             image-rendering: pixelated;
         }
 
         .window {
             background-color: var(--win-bg);
-            border: 2px solid;
-            border-color: var(--border-highlight) var(--border-dark-shadow) var(--border-dark-shadow) var(--border-highlight);
-            box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
-            width: 800px;
-            height: 600px;
+            border-top: 2px solid var(--border-highlight);
+            border-left: 2px solid var(--border-highlight);
+            border-right: 2px solid var(--border-dark-shadow);
+            border-bottom: 2px solid var(--border-dark-shadow);
+            box-shadow: 2px 2px 0 var(--border-shadow);
             padding: 2px;
+            width: 95vw;
+            max-width: 900px;
+            height: 90vh;
+            max-height: 700px;
             display: flex;
             flex-direction: column;
         }
-        
+
         .window-header {
             background-color: var(--win-header);
             color: white;
@@ -54,442 +56,515 @@
             align-items: center;
             font-weight: bold;
         }
-        
-        .window-controls button {
-            background-color: var(--win-bg);
-            border: 2px solid;
-            border-color: var(--border-highlight) var(--border-dark-shadow) var(--border-dark-shadow) var(--border-highlight);
-            width: 18px;
-            height: 18px;
-            margin-left: 3px;
-            font-family: 'Marlett', 'Webdings', 'Wingdings';
-            font-size: 10px;
-            line-height: 10px;
-            padding: 0;
+
+        .window-header-title {
             display: flex;
             align-items: center;
-            justify-content: center;
         }
 
-        .window-body {
+        .window-header-title img {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
+
+        .window-header-buttons {
+            display: flex;
+        }
+
+        .window-header-button {
+            width: 18px;
+            height: 16px;
+            background-color: var(--win-bg);
+            border-top: 1px solid var(--border-highlight);
+            border-left: 1px solid var(--border-highlight);
+            border-right: 1px solid var(--border-dark-shadow);
+            border-bottom: 1px solid var(--border-dark-shadow);
+            box-shadow: 1px 1px 0 var(--border-shadow);
+            margin-left: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .window-content {
             flex-grow: 1;
             padding: 10px;
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            border-top: 2px solid var(--border-shadow);
+            border-left: 2px solid var(--border-shadow);
         }
 
-        .panel {
-            border: 2px solid;
-            border-color: var(--border-shadow) var(--border-highlight) var(--border-highlight) var(--border-shadow);
-            padding: 8px;
-            background-color: var(--win-bg);
-        }
-        
-        .task-panel {
-            height: 50px;
+        .main-panel {
+            flex-grow: 1;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1em;
+            flex-direction: column;
+        }
+
+        #task-panel {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-top: 2px solid var(--border-shadow);
+            border-left: 2px solid var(--border-shadow);
+            border-right: 2px solid var(--border-highlight);
+            border-bottom: 2px solid var(--border-highlight);
+        }
+
+        #task-display {
             font-weight: bold;
         }
 
-        .main-content {
+        #rooms-panel {
             flex-grow: 1;
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
             gap: 10px;
         }
 
-        .plan-panel {
-            flex-grow: 3;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .panel-title {
-            margin: -8px -8px 8px -8px;
-            padding: 2px 4px;
-            border-bottom: 2px solid;
-            border-color: var(--border-shadow) var(--border-highlight) var(--border-highlight) var(--border-shadow);
-            background: #e0e0e0;
-        }
-        
-        .floor-plan {
-            flex-grow: 1;
-            background: white;
-            border: 2px solid;
-            border-color: var(--border-shadow) var(--border-highlight) var(--border-highlight) var(--border-shadow);
-            position: relative;
-        }
-
         .room {
-            border: 2px solid var(--win-bg);
-            position: absolute;
-            box-sizing: border-box;
+            border-top: 2px solid var(--border-shadow);
+            border-left: 2px solid var(--border-shadow);
+            border-right: 2px solid var(--border-highlight);
+            border-bottom: 2px solid var(--border-highlight);
+            padding: 30px 5px 5px 5px;
+            position: relative;
+            background-color: #fff;
             display: flex;
             flex-wrap: wrap;
             align-content: flex-start;
-            gap: 4px;
-            padding: 4px;
+            gap: 5px;
         }
+
         .room.drag-over {
-            background-color: #a0a0ff;
+            outline: 2px dashed var(--win-header);
+            outline-offset: -4px;
         }
-        
-        .room-label {
+
+        .room-title {
             position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.8);
+            top: 5px;
+            left: 5px;
+            background: rgba(255, 255, 255, 0.7);
             padding: 2px 5px;
-            font-size: 14px;
+            border: 1px solid var(--border-shadow);
         }
-        
-        #living-room { top: 0; left: 0; width: 60%; height: 100%; }
-        #bedroom { top: 0; right: 0; width: 40%; height: 50%; }
-        #kitchen { bottom: 0; right: 0; width: 40%; height: 50%; border-top: 2px solid var(--win-bg);}
+
+        #living-room {
+            grid-column: 1 / 3;
+            background-image: 
+                linear-gradient(rgba(139, 69, 19, 0.3) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(139, 69, 19, 0.3) 2px, transparent 2px),
+                linear-gradient(rgba(139, 69, 19, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 69, 19, 0.2) 1px, transparent 1px);
+            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+            background-color: #DEB887;
+        }
+
+        #bedroom {
+             background-image:
+                radial-gradient(circle at 1px 1px, #A2A2A2 1px, transparent 0);
+             background-size: 5px 5px;
+             background-color: #D3D3D3;
+        }
+
+        #kitchen {
+            background-image:
+                linear-gradient(45deg, #bbb 25%, transparent 25%), 
+                linear-gradient(-45deg, #bbb 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #bbb 75%),
+                linear-gradient(-45deg, transparent 75%, #bbb 75%);
+            background-size: 20px 20px;
+            background-color: #ddd;
+        }
 
 
-        .elements-panel {
-            flex-grow: 1;
+        #elements-panel {
+            width: 120px;
+            border-left: 2px solid var(--border-shadow);
+            padding-left: 10px;
+            margin-left: 10px;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
         }
-        
-        .elements-grid {
-             flex-grow: 1;
-             display: flex;
-             flex-wrap: wrap;
-             gap: 15px;
-             align-content: flex-start;
-             padding-top: 10px;
+
+        .elements-title {
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
         .device {
-            width: 70px;
-            height: 70px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 10px;
+            border: 2px solid var(--win-bg);
             cursor: grab;
-        }
-        
-        .device.dragging {
-            opacity: 0.5;
-            cursor: grabbing;
-        }
-
-        .device img {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 5px;
-        }
-        
-        .device span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
             font-size: 12px;
+            position: relative; /* For tooltip positioning */
+            flex-shrink: 0;
         }
         
         .room .device {
-            width: 32px;
-            height: 32px;
-        }
-        
-        .room .device span {
-           display: none;
+            width: 48px;
+            height: 48px;
         }
 
+        .device:active {
+            cursor: grabbing;
+        }
+
+        .device.dragging {
+            opacity: 0.5;
+            outline: 1px dotted var(--win-text);
+            outline-offset: 2px;
+        }
+
+        .device-placeholder {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pixelated {
+            image-rendering: pixelated;
+        }
+
+        /* Tooltip Styles */
+        .device[data-tooltip] {
+            position: relative;
+        }
+
+        .device[data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 5px;
+            background-color: var(--tooltip-bg);
+            border: 1px solid var(--border-dark-shadow);
+            color: var(--win-text);
+            padding: 4px 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+            pointer-events: none;
+            width: max-content;
+            max-width: 200px;
+        }
+        
+        .device[data-tooltip]:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+
         /* Modal Styles */
-        .modal-overlay {
+        #modal-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.5);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 100;
         }
 
         .modal-window {
-            width: 350px;
+            width: 300px;
+            background-color: var(--win-bg);
+            border-top: 2px solid var(--border-highlight);
+            border-left: 2px solid var(--border-highlight);
+            border-right: 2px solid var(--border-dark-shadow);
+            border-bottom: 2px solid var(--border-dark-shadow);
+            box-shadow: 2px 2px 0 var(--border-shadow);
+            padding: 2px;
+            display: flex;
+            flex-direction: column;
         }
 
-        .modal-body {
+        .modal-header {
+            background-color: var(--win-header);
+            color: white;
+            padding: 3px 5px;
+            font-weight: bold;
+        }
+
+        .modal-content {
             padding: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
         }
-        
-        .modal-body img {
+
+        #modal-icon-placeholder {
             width: 32px;
             height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 15px;
+            background-color: var(--win-header);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        #modal-message {
+            flex-grow: 1;
         }
 
         .modal-footer {
-            padding: 10px;
             display: flex;
             justify-content: center;
+            padding: 0 10px 10px;
         }
-        
-        .win-button {
+
+        #modal-ok-button {
+            width: 80px;
+            height: 25px;
             background-color: var(--win-bg);
-            border: 2px solid;
-            border-color: var(--border-highlight) var(--border-dark-shadow) var(--border-dark-shadow) var(--border-highlight);
-            padding: 5px 20px;
-            box-shadow: 1px 1px 0px var(--border-dark-shadow);
+            border-top: 1px solid var(--border-highlight);
+            border-left: 1px solid var(--border-highlight);
+            border-right: 1px solid var(--border-dark-shadow);
+            border-bottom: 1px solid var(--border-dark-shadow);
+            box-shadow: 1px 1px 0 var(--border-shadow);
+            cursor: pointer;
         }
-        
-        .win-button:active {
-            border-color: var(--border-dark-shadow) var(--border-highlight) var(--border-highlight) var(--border-dark-shadow);
+
+        #modal-ok-button:active {
+            border-top: 1px solid var(--border-dark-shadow);
+            border-left: 1px solid var(--border-dark-shadow);
+            border-right: 1px solid var(--border-highlight);
+            border-bottom: 1px solid var(--border-highlight);
             box-shadow: none;
-            transform: translate(1px, 1px);
+        }
+
+        /* --- RESPONSIVE STYLES --- */
+        @media (max-width: 768px) {
+            body {
+                cursor: default;
+                height: 100%;
+                overflow: auto;
+            }
+
+            .window {
+                width: 100%;
+                height: 100%;
+                max-width: none;
+                max-height: none;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .window-content {
+                flex-direction: column;
+                padding: 5px;
+                border: none;
+            }
+            
+            #elements-panel {
+                order: 2; /* Move to bottom */
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 10px;
+                width: 100%;
+                height: auto;
+                min-height: 90px;
+                border-left: none;
+                border-top: 2px solid var(--border-shadow);
+                margin: 0;
+                padding: 10px;
+                overflow-x: auto;
+                box-sizing: border-box;
+            }
+
+            .elements-title {
+                display: none;
+            }
+
+            #elements-panel .device {
+                margin-bottom: 0;
+                flex-shrink: 0; /* Prevent icons from shrinking */
+            }
+
+            .main-panel {
+                order: 1; /* Move to top */
+                flex-grow: 1;
+                min-height: 0;
+            }
+
+            #rooms-panel {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(3, 1fr);
+                height: 100%;
+            }
+
+            #living-room {
+                grid-column: auto;
+            }
+
+            .modal-window {
+                width: 90vw;
+            }
+
+            .device[data-tooltip]::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .device {
+                width: 56px;
+                height: 56px;
+                font-size: 10px;
+            }
+
+            .device-placeholder {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .room .device {
+                width: 40px;
+                height: 40px;
+            }
+
+            #task-panel {
+                padding: 5px;
+                margin-bottom: 5px;
+            }
+
+            #task-display {
+                font-size: 14px;
+            }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="window" id="main-window">
+    <div class="window">
         <div class="window-header">
-            <span>Homenet Setup 95</span>
-            <div class="window-controls">
-                <button>_</button>
-                <button>&#9633;</button>
-                <button>X</button>
+            <div class="window-header-title">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5wsCAy0I8x5wygAAAPhJREFUOMvF0r0rQWEYx/GfV4KkUPhI0hQk90tYpI9ISgY1YxYpJbJYiM8gKchKlpKFX8Hj+57epzvoY3/11P285znnOeecl+bL+p3O0oKbeMKd0aU5i0f0oY8K2oE5jTjBD3pQwwZWUCYxhgM84QeP8BvP2463gBRM4QeLaMUD9OKBixjCGRrxgw/wFz6wBG/YBl7wBS94xRPGNQ06GqceIxxhECNYwS1u8IJ3nOIBr/hFvA3wA0/4h/8YxQzWsIE1/MMz/qYd60AxVrGCf7wgRN03gQeM4BwP2MEG1nCFd3zmGs84wQc+8YkjjjCDg2z0ucA3wA+c4gVf+MLlD/1hN3613uT/AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIzLTExLTAyVDAzOjQ1OjA4KzAwOjAwv4/wWAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMy0xMS0wMlQwMzo0NTowOCswMDowMN855IcAAAAASUVORK5CYII=" alt="icon">
+                Умный Дом 95
+            </div>
+            <div class="window-header-buttons">
+                <div class="window-header-button">_</div>
+                <div class="window-header-button">□</div>
+                <div class="window-header-button">X</div>
             </div>
         </div>
-        <div class="window-body">
-            <div class="panel task-panel" id="task-display">
-                ЗАДАЧА: Загрузка...
-            </div>
-            <div class="main-content">
-                <div class="panel plan-panel">
-                    <div class="panel-title">План Квартиры</div>
-                    <div class="floor-plan">
-                        <div class="room" id="living-room" data-room="Гостиная">
-                            <span class="room-label">Гостиная</span>
-                        </div>
-                        <div class="room" id="bedroom" data-room="Спальня">
-                             <span class="room-label">Спальня</span>
-                        </div>
-                        <div class="room" id="kitchen" data-room="Кухня">
-                             <span class="room-label">Кухня</span>
-                        </div>
+        <div class="window-content">
+            <div class="main-panel">
+                <div id="task-panel">
+                    <p id="task-display">Загрузка задач...</p>
+                </div>
+                <div id="rooms-panel">
+                    <div id="living-room" class="room" data-room="Гостиная">
+                        <div class="room-title">Гостиная</div>
+                    </div>
+                    <div id="bedroom" class="room" data-room="Спальня">
+                        <div class="room-title">Спальня</div>
+                    </div>
+                    <div id="kitchen" class="room" data-room="Кухня">
+                        <div class="room-title">Кухня</div>
                     </div>
                 </div>
-                <div class="panel elements-panel">
-                    <div class="panel-title">Элементы Умного Дома</div>
-                    <div class="elements-grid" id="elements-container">
-                        <div class="device" id="device-socket" draggable="true">
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAD5JREFUWEft0EEKADAIxEHy7L/XRoF2uYFqfE+wU1p8Z5hSBAh+AgEBAYE/ARAYQIAgL2Bv9t7t29/fA9wVCEQgAgEBAYEnAofzG08VRMIPAAAAAElFTkSuQmCC" alt="Умная розетка" class="pixelated">
-                            <span>Розетка</span>
-                        </div>
-                         <div class="device" id="device-sensor" draggable="true">
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAYlJREFUWEedl0tuwzAMRbmZm2AmmkEmaCfbJCTBJdgJmIAnYJo0eB6UBCFKtqLIX0Z+lBRf7Md2HL6sfDwuPwI4AGfgCbgDToA+G1gD7/8P4A5wA04AT8D57MhB+gAUgRtw/g1OQBuAP/h4wBtwAUwK8P8O3AGn4G5gDngCvgAX4WkAXoK/8a0AOzABvAFJc/C3zY4/oU2AO8ABcE+AfcA54N/5oJ8Av4AL8E0A9oBfAN8Gv8eBH+C3AFiS/hT4SgL4U2ArA5+Bq317yL4ADsD5D3AB3AT+BvgD/gP8308k+E3iCjgbqP4H4GZwSgJ4EwA+gE4+i7gB6+0w4gV4ANr7O3j363YvgCeweG+jAJvyD5a2H7kYvgTw4Wq/3gCLYFHAfL3PArAYvADwfo0sANd8AK58A+C69wF4ABqAhwB4fweAfV3rARbAInwQ8A14c8P7P3AD3AOn5X8/AdY12t+nE+BvBPAAvwR8P2g84N8B0A8ARXwG4AN4A15A3wI+AXwGbAG/AL6t8Qbw6wSgA/gI/gfgWwUATwH8O/UjE+C3gDfgPXgB3gK/gbwHwG/3v+cDfK3//AD2vQAAJ/wI8K/BA/gQgFkA3v+aAA0/AZ6AGwHPAI3fASwADcDHADyAI57T5Pj/2f0Bf552bA5hhi8AAAAASUVORK5CYII=" alt="Датчик движения" class="pixelated">
-                            <span>Датчик</span>
-                        </div>
-                         <div class="device" id="device-camera" draggable="true">
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAXxJREFUWEft10FOwzAMBWB3U/YQ3cMxOgc3yF24C+gU2iVpkyWlSJGcOP54Lcn/1FIm+d7P5yJ3jX+5aK4D4J/+L+AJOAErQAnYAPt/8r8PzIAFcAO8AOfgL/D3CbgB3oD3JMQd8AM4APc9/wG8Au+Be3gG7oCFADyApkL8DcgAFuAJWAJfAZaBv/sL+AJ+gRngC/h+A/wQfg2wAswAa+A9uAXWAu1zAB8AbcD5zI6T3QOcgfMA7AN3A7ANfAF+Bq8m2B58AWz4HvgCmAO74J2B/4G1wQfwCvhX4B/wA5wA34AX4G41AAdg+v8AegA8gN/yTwAfAUjY3N8P4Avo+wPA+78vAH4B9gC0/eB/ANB6vV5gQ17Q/d3W3AB8y8v7u8Xz+sAAmA0APeA92ArwANh7ACaA7j0ATgC99wB8A+Degy9AXyL6APz7eB0AvwO8fQD8DnDvAfD3gXsPABs4A7wBvJz59y8AjYDH4J/y3wzggL/V/f8A/L8C3gE+g/cANgBH4Dk4A27AOfgBXIAHoANgBbi7x/8f9s330X8BXoAH4BbwZgA+AQfACjAC/Ff/gQfgi7z3gZkABcApwAZwAdwv8AOgHfgZgL8AXQAPwAPQAViAz/0F+AMgAbwA4vX9/QE34An4E+AAuAFeAR8CPAc/gQe+HAPvAXgDboAD4G2AnwBvgI9D/An+1f0P4BvARwHWA9gAfABuwC7gAPwP0D9/AD8BD8AbwAfwT8D/gL35Aez56wN4BjwBrICXAFn/4u//LfwD9wD2ATwA3/+/gIuA/Ac5x9G12j9hKgAAAABJRU5ErkJggg==" alt="Камера" class="pixelated">
-                            <span>Камера</span>
-                        </div>
-                         <div class="device" id="device-thermostat" draggable="true">
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAQBJREFUWEfF11EOg0AMRNEHcOkp2oP4P1yK+wHtxXpBihWt2tkyZzJ5TDbzE2lX28uPAdwAd8Al+AI+gJ/B7g74CngCXIAfcHAC/N0EzsABcAMsgVeAH8AFcAlcAo+AP8AZ+AD8I3AG/gSngI9Am8C9g4sAW4AtsAIsAQuADyDbB5EEwNq9AOsnQOsA9A6A1gGgNwD6ANB2APgMwO4AdB8AzgB0HwA+BuAvgF8BfASwD8B2AKwHYHuA5gDkDkD7AJwH4C8A/wLYBvAagG0AtgbAagDmAN4AsANAD+ALwF4A1gNIB0AHQBcAlwFIB2BGANgGwGYA+QDgAFgM4OcaA5s5f1IAzAF0AHQA9ACyAVQOQNcBVQcgagDFAdAxAKkDgLkE+wUAdgD2DQD7AexfA/AbgD8AG4FvAL/f/13gD/gI/A08AZdAMvAeOM88Ad+Ad+AAnAAn4ANwAdzY9D8A3L/59QdI5nUfI+QG9wAAAABJRU5ErkJggg==" alt="Термостат" class="pixelated">
-                            <span>Термостат</span>
-                        </div>
-                         <div class="device" id="device-speaker" draggable="true">
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAOZJREFUWEftl0EOgCAMBPeobd+h98n/UFTp0pC2sUlxQBCb781kMghfLsqXx/0AEO/C/wEA/gBYDABpAEBrAIAXAICUAADQAQBWAcA6ADAFAEgHAHIAgGUAwLoAAC4AwLIAIC4AIAcAWAdAKwBAbQDAWgBA7QGAZADAagCAGABAFQBAHQBALACQGgDkAEA2AEgNANgAIOc+AIAtANgOAPcA7gGAvQCgPQD/CuA5gLcB8A3g+wA8B1A+gP4D+AnwG8BvAD8B/Arg+wC4B+D/AegcgF4A7AGQ2gAsAvQAoAsAiAHAGgBAbQDAWACgdgBAbQCgNACA/QIw/gJ/X8/y3BvSzwAAAABJRU5ErkJggg==" alt="Умная колонка" class="pixelated">
-                            <span>Колонка</span>
-                        </div>
-                    </div>
+            </div>
+            <div id="elements-panel">
+                <div class="elements-title"><u>Э</u>лементы:</div>
+                <div id="device-socket" class="device" draggable="true" data-tooltip="Умная розетка: Включает и выключает бытовые приборы.">
+                    <div class="device-placeholder pixelated"></div>
+                    Розетка
+                </div>
+                <div id="device-sensor" class="device" draggable="true" data-tooltip="Датчик движения: Обнаруживает движение в помещении.">
+                    <div class="device-placeholder pixelated"></div>
+                    Датчик
+                </div>
+                <div id="device-camera" class="device" draggable="true" data-tooltip="Камера наблюдения: Следит за безопасностью.">
+                    <div class="device-placeholder pixelated"></div>
+                    Камера
+                </div>
+                <div id="device-thermostat" class="device" draggable="true" data-tooltip="Термостат: Регулирует температуру в комнате.">
+                    <div class="device-placeholder pixelated"></div>
+                    Термостат
+                </div>
+                <div id="device-speaker" class="device" draggable="true" data-tooltip="Умная колонка: Воспроизводит музыку и голосовые команды.">
+                    <div class="device-placeholder pixelated"></div>
+                    Колонка
+                </div>
+                <div id="device-light" class="device" draggable="true" data-tooltip="Умная лампочка: Управляет освещением в комнате.">
+                    <div class="device-placeholder pixelated"></div>
+                    Лампочка
+                </div>
+                <div id="device-lock" class="device" draggable="true" data-tooltip="Умный замок: Обеспечивает безопасность входной двери.">
+                    <div class="device-placeholder pixelated"></div>
+                    Замок
+                </div>
+                <div id="device-vacuum" class="device" draggable="true" data-tooltip="Робот-пылесос: Автоматически убирает пол.">
+                    <div class="device-placeholder pixelated"></div>
+                    Пылесос
+                </div>
+                <div id="device-blinds" class="device" draggable="true" data-tooltip="Умные жалюзи: Контролируют естественное освещение.">
+                    <div class="device-placeholder pixelated"></div>
+                    Жалюзи
+                </div>
+                <div id="device-purifier" class="device" draggable="true" data-tooltip="Очиститель воздуха: Поддерживает чистоту воздуха в помещении.">
+                    <div class="device-placeholder pixelated"></div>
+                    Очиститель
+                </div>
+                <div id="device-doorbell" class="device" draggable="true" data-tooltip="Умный звонок: Показывает, кто стоит за дверью.">
+                    <div class="device-placeholder pixelated"></div>
+                    Звонок
+                </div>
+                <div id="device-coffeemaker" class="device" draggable="true" data-tooltip="Кофеварка: Готовит кофе по расписанию.">
+                    <div class="device-placeholder pixelated"></div>
+                    Кофеварка
+                </div>
+                <div id="device-leak" class="device" draggable="true" data-tooltip="Датчик протечки: Предотвращает потоп на кухне.">
+                    <div class="device-placeholder pixelated"></div>
+                    Датчик протечки
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Template -->
-    <div id="modal-container" class="modal-overlay">
-        <div class="window modal-window">
-            <div class="window-header" id="modal-title">Information</div>
-            <div class="window-body">
-                <div class="modal-body">
-                    <img id="modal-icon" src="" alt="icon" class="pixelated">
-                    <p id="modal-message">Сообщение</p>
-                </div>
-                <div class="modal-footer">
-                    <button id="modal-ok-button" class="win-button">OK</button>
-                </div>
+    <div id="modal-container">
+        <div class="modal-window">
+            <div id="modal-title" class="modal-header">Information</div>
+            <div class="modal-content">
+                <div id="modal-icon-placeholder">i</div>
+                <p id="modal-message">Сообщение</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-ok-button">OK</button>
             </div>
         </div>
     </div>
 
+    <script type="module" src="index.tsx"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- ASSETS ---
-            const soundSuccess = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YUIAAABvT1/w2/lU/a4DkP+PA0H/pP6fAPIAEwD5/voAVgAbAPn++QA7ABQA9v4dAEUAJgDw/tgASwCUAOH/IgChAHsAxv+IAI0A/gDF/84AgwCVAL//iACzAJEAnwBEAKgA/ACK/78A7wCX/4gAYgDmAM3/kwB+AFIAz//OAH4AjwCP/7sAvQDg/3oAwwDWAGYAngDhAFQA0ACaAIgArwCVAIYAwwCdALQAtQCLAN4ARgB2ACgAawBIAKYAagA0ANQAgwBwAF0AbQCIAIoAXQDOAC8AVwClACEAUwA/AI8AawAaAFsASgA/ADsAYgA3ADMAUgA/AEgAZgBSADsARgBDAEYATwA=');
-            const soundError = new Audio('data:audio/wav;base64,UklGRigBAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQBAAD/////AAAAAAAAAAD/AAAA//8AAAAA////AAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAD/AAAA////AAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AA==');
-            const iconInfo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAG9JREFUWEft1sENgCAQBMEYiW/sR3AEz+BZmKBYjKbxmYd/dkiSlGS/4+Vp8vJucgI4ASeA1QAy2wQA0AIgeQAoQBEACgBAIQBUAFQAVACUAKAigAQAEDKAiQBwAgDSf0A7AECGzS8A8H8bYQYkzt+5+gAAAABJRU5ErkJggg==';
-            const iconError = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAIhJREFUWEft0sENgCAMRFEfk7ZpB2qgTmqgDWgg2oZqgCLpEM0U4v/AhQf3e+910qHw+T7+fgBwE14A4IUA7ABACwBoBACoAQBUBQA1ANCmAGgEACgAQAMAaAAABQBAAQAoAECbAKAJAFAQgE4AtAnAFoB0AaBbAAoA0AXQvgH8d5jY+gH0+v+1fgDb8gM+AAAAAElFTkSuQmCC';
-            const iconSuccess = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAO1JREFUWEft1kEOgDAIQFE/to99/39vN4oVW+5iEHEWbnAJaUoW+bUc5z/XAQDA+3ECAE4AIAcATAAQAgAUAEAGAMAEAGAEAGAAgAAAIAcAyAEAGAAgBAAIAEA2ADgGYDsAWAIAWQB0A0BXANAbAEYB8CMAegCgC8BuAG4BYBnA3QB0B8AnAIgA/iMAAEC8AIAeANgC4HoAvwLgDwDQA8B+BTAegPYC8CeA+gKwH4B9AGQbgBcA1AA4AKAFwF8APgHgfwJ4HYCrAXoA0AOAeAEAfgLwA8D/A3C/g/0/Ad0BWAvAAAB+AbIAkF2l+wPjAAAAAElFTkSuQmCC';
-
-            // --- GAME STATE & CONFIG ---
-            const gameState = {
-                currentLevel: 1,
-                levels: {
-                    1: {
-                        task: "ЗАДАЧА 1: Обеспечьте безопасность в гостиной.",
-                        targets: [
-                            { deviceId: 'device-camera', room: 'Гостиная' },
-                            { deviceId: 'device-sensor', room: 'Гостиная' }
-                        ],
-                        placed: []
-                    },
-                    2: {
-                        task: "ЗАДАЧА 2: Создайте комфорт в доме.",
-                        targets: [
-                            { deviceId: 'device-thermostat', room: 'Спальня' },
-                            { deviceId: 'device-speaker', room: 'Гостиная' }
-                        ],
-                        placed: []
-                    },
-                    3: {
-                        task: "ЗАДАЧА 3: Повысьте энергоэффективность.",
-                        targets: [
-                            { deviceId: 'device-socket', room: 'Кухня' }
-                        ],
-                        placed: []
-                    }
-                }
-            };
-
-            // --- DOM ELEMENTS ---
-            const taskDisplay = document.getElementById('task-display');
-            const devices = document.querySelectorAll('.device');
-            const rooms = document.querySelectorAll('.room');
-            const modalContainer = document.getElementById('modal-container');
-            const modalTitle = document.getElementById('modal-title');
-            const modalIcon = document.getElementById('modal-icon');
-            const modalMessage = document.getElementById('modal-message');
-            const modalOkButton = document.getElementById('modal-ok-button');
-            const elementsContainer = document.getElementById('elements-container');
-
-            let draggedItem = null;
-
-            // --- FUNCTIONS ---
-            function updateTaskDisplay() {
-                if (gameState.currentLevel > Object.keys(gameState.levels).length) {
-                    taskDisplay.textContent = "Система полностью настроена!";
-                } else {
-                    taskDisplay.textContent = gameState.levels[gameState.currentLevel].task;
-                }
-            }
-            
-            function showModal(type, message) {
-                if (type === 'success') {
-                    modalTitle.textContent = 'Information';
-                    modalIcon.src = iconInfo;
-                    soundSuccess.play();
-                } else if (type === 'error') {
-                    modalTitle.textContent = 'Error';
-                    modalIcon.src = iconError;
-                    soundError.play();
-                } else if (type === 'final') {
-                    modalTitle.textContent = 'Поздравляем!';
-                    modalIcon.src = iconSuccess;
-                    soundSuccess.play();
-                }
-                modalMessage.textContent = message;
-                modalContainer.style.display = 'flex';
-            }
-            
-            function hideModal() {
-                modalContainer.style.display = 'none';
-            }
-
-            function checkLevelCompletion() {
-                const level = gameState.levels[gameState.currentLevel];
-                if (level.placed.length === level.targets.length) {
-                    showModal('success', 'Отлично! Система настроена верно!');
-                    gameState.currentLevel++;
-                    if (gameState.currentLevel > Object.keys(gameState.levels).length) {
-                        setTimeout(() => showModal('final', 'Поздравляем! Вы создали идеальный Умный Дом 95!'), 500);
-                    }
-                    updateTaskDisplay();
-                }
-            }
-            
-            function handleDrop(e) {
-                e.preventDefault();
-                const dropZone = e.currentTarget;
-                const deviceId = e.dataTransfer.getData('text/plain');
-                const deviceElement = document.getElementById(deviceId);
-                
-                if (!deviceElement || !dropZone.classList.contains('room')) return;
-
-                const roomName = dropZone.dataset.room;
-                dropZone.classList.remove('drag-over');
-
-                const level = gameState.levels[gameState.currentLevel];
-                const target = level.targets.find(t => t.deviceId === deviceId && t.room === roomName);
-                const isAlreadyPlaced = level.placed.includes(deviceId);
-
-                if (target && !isAlreadyPlaced) {
-                    // Correct placement
-                    const clonedDevice = deviceElement.cloneNode(true);
-                    clonedDevice.id = `placed-${deviceId}`;
-                    clonedDevice.draggable = false;
-                    clonedDevice.classList.remove('dragging');
-                    clonedDevice.style.cursor = 'default';
-                    dropZone.appendChild(clonedDevice);
-                    
-                    deviceElement.style.visibility = 'hidden'; // Hide original
-                    
-                    level.placed.push(deviceId);
-                    checkLevelCompletion();
-                } else {
-                    // Incorrect placement
-                    showModal('error', 'Ошибка! Этот элемент здесь не нужен.');
-                }
-            }
-
-
-            // --- EVENT LISTENERS ---
-            devices.forEach(device => {
-                device.addEventListener('dragstart', (e) => {
-                    e.dataTransfer.setData('text/plain', e.target.id);
-                    setTimeout(() => e.target.classList.add('dragging'), 0);
-                });
-                
-                device.addEventListener('dragend', (e) => {
-                    e.target.classList.remove('dragging');
-                });
-            });
-
-            rooms.forEach(room => {
-                room.addEventListener('dragover', (e) => {
-                    e.preventDefault(); // Necessary to allow dropping
-                    room.classList.add('drag-over');
-                });
-
-                room.addEventListener('dragleave', () => {
-                     room.classList.remove('drag-over');
-                });
-                
-                room.addEventListener('drop', handleDrop);
-            });
-            
-            modalOkButton.addEventListener('click', hideModal);
-
-
-            // --- INITIALIZE GAME ---
-            updateTaskDisplay();
-        });
-    </script>
 </body>
 </html>
