@@ -1,4 +1,5 @@
 
+
 import { ICONS } from './constants.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- ASSETS ---
     const soundSuccess = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YUIAAABvT1/w2/lU/a4DkP+PA0H/pP6fAPIAEwD5/voAVgAbAPn++QA7ABQA9v4dAEUAJgDw/tgASwCUAOH/IgChAHsAxv+IAI0A/gDF/84AgwCVAL//iACzAJEAnwBEAKgA/ACK/78A7wCX/4gAYgDmAM3/kwB+AFIAz//OAH4AjwCP/7sAvQDg/3oAwwDWAGYAngDhAFQA0ACaAIgArwCVAIYAwwCdALQAtQCLAN4ARgB2ACgAawBIAKYAagA0ANQAgwBwAF0AbQCIAIoAXQDOAC8AVwClACEAUwA/AI8AawAaAFsASgA/ADsAYgA3ADMAUgA/AEgAZgBSADsARgBDAEYATwA=');
-    const soundError = new Audio('data:audio/wav;base64,UklGRigBAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQBAAD/////AAAAAAAAAAD/AAAA//8AAAAA////AAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAD/AAAA////AAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AA==');
+    const soundError = new Audio('data:audio/wav;base64,UklGRigBAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQBAAD/////AAAAAAAAAAD/AAAA//8AAAAA////AAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAD/AAAA////AAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AAAA////AAAAAAAAAAD/AA==');
 
     // --- GAME STATE & CONFIG ---
     interface Target {
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentLevel: 1,
         levels: {
             1: {
-                task: "ЗАДАЧА 1: Давайте позаботимся о безопасности. Нужно бдительное око для главной комнаты и надежный страж для входа.",
+                task: "ЗАДАЧА 1: Обеспечьте безопасность в главной комнате. Нужен прибор, чтобы видеть всё, что происходит, и механизм для контроля доступа в дом.",
                 targets: [
                     { deviceId: 'device-camera', room: 'Гостиная' },
                     { deviceId: 'device-lock', room: 'Гостиная' }
@@ -64,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 placed: []
             },
             2: {
-                task: "ЗАДАЧА 2: Пора сделать спальню оазисом комфорта. Добавьте источник мягкого света и устройство для поддержания идеальной температуры для сна.",
+                task: "ЗАДАЧА 2: Создайте идеальные условия для отдыха в спальне. Установите прибор для управления светом и ещё один для контроля за климатом в комнате.",
                 targets: [
                     { deviceId: 'device-light', room: 'Спальня' },
                     { deviceId: 'device-thermostat', room: 'Спальня' }
@@ -72,14 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 placed: []
             },
             3: {
-                task: "ЗАДАЧА 3: Кухонная техника ждет своей очереди. Дайте ей возможность управляться дистанционно, подключив к источнику умной энергии.",
+                task: "ЗАДАЧА 3: Сделайте обычную кухонную технику умнее. Добавьте устройство, которое позволит управлять её питанием на расстоянии.",
                 targets: [
                     { deviceId: 'device-socket', room: 'Кухня' }
                 ],
                 placed: []
             },
             4: {
-                task: "ЗАДАЧА 4: Гостиная должна быть чистой и веселой. Найдите автоматического помощника для полов, источник хорошего настроения для ушей и стража, что замечает каждое движение.",
+                task: "ЗАДАЧА 4: Добавьте в гостиную больше технологий. Нужен автоматический уборщик, устройство для воспроизведения музыки и датчик, который реагирует на присутствие.",
                 targets: [
                     { deviceId: 'device-vacuum', room: 'Гостиная' },
                     { deviceId: 'device-speaker', room: 'Гостиная' },
@@ -88,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 placed: []
             },
             5: {
-                task: "ЗАДАЧА 5: Сделаем утро приятным. Пусть комната наполнится светом по расписанию, а воздух всегда будет свежим.",
+                task: "ЗАДАЧА 5: Автоматизируйте утренний комфорт в спальне. Установите систему для управления естественным освещением и прибор для поддержания чистоты воздуха.",
                 targets: [
                     { deviceId: 'device-blinds', room: 'Спальня' },
                     { deviceId: 'device-purifier', room: 'Спальня' }
@@ -96,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 placed: []
             },
             6: {
-                task: "ЗАДАЧА 6: Готовимся к приему гостей и бодрому утру. Нужно знать, кто пришел, и чтобы бодрящий напиток был готов вовремя.",
+                task: "ЗАДАЧА 6: Улучшите гостеприимство и утро. Установите у входа устройство, чтобы не пропустить визитёров, а на кухне — аппарат для приготовления горячего напитка по команде.",
                 targets: [
                     { deviceId: 'device-doorbell', room: 'Гостиная' },
                     { deviceId: 'device-coffeemaker', room: 'Кухня' }
@@ -104,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 placed: []
             },
             7: {
-                task: "ЗАДАЧА 7: Кухня - зона риска. Установим стража от водных неприятностей, а в гостиной создадим идеальную атмосферу для отдыха.",
+                task: "ЗАДАЧА 7: Предотвратите бытовые проблемы на кухне с помощью детектора влаги. А в гостиной доведите комфорт до максимума, управляя температурой и музыкой.",
                 targets: [
                     { deviceId: 'device-leak', room: 'Кухня' },
                     { deviceId: 'device-speaker', room: 'Гостиная' },
